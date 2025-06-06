@@ -1,0 +1,71 @@
+@startuml
+interface service.TemplateService {
+~ String getTemplate(String,String)
+~ void setTemplate(String,String)
+~ void resetTemplate(String)
+~ Map<String,String> getAllCustomTemplates()
+~ Map<String,String> getAllAvailableTemplates()
+~ boolean isCustomTemplate(String)
+}
+
+interface service.EventService {
+~ Event addEvent(Event,Long)
+~ Event updateEvent(Event,Long)
+~ void deleteEvent(String,Long)
+~ Optional<Event> getEventByIdAndOwner(String,Long)
+~ List<Event> getEventsForOwner(Long)
+~ List<Event> getEventsForPeriodForOwner(LocalDateTime,LocalDateTime,Long)
+~ Event setEventReminderTime(String,LocalDateTime,Long)
+~ Event toggleEventReminders(String,boolean,Long)
+~ List<Event> getAllEventsGlobally()
+}
+
+interface service.ReminderService {
+~ void start()
+~ void stop()
+}
+
+class service.impl.EventServiceImpl {
+- EventDAO eventDAO
++ Event addEvent(Event,Long)
++ Event updateEvent(Event,Long)
++ void deleteEvent(String,Long)
++ Optional<Event> getEventByIdAndOwner(String,Long)
++ List<Event> getEventsForOwner(Long)
++ List<Event> getEventsForPeriodForOwner(LocalDateTime,LocalDateTime,Long)
++ Event setEventReminderTime(String,LocalDateTime,Long)
++ Event toggleEventReminders(String,boolean,Long)
++ List<Event> getAllEventsGlobally()
+}
+
+
+class service.impl.ReminderServiceImpl {
+- EventService eventService
+- TelegramBotView telegramBotView
+- ScheduledExecutorService scheduler
+- {static} long CHECK_INTERVAL_MINUTES
++ void setTelegramBotView(TelegramBotView)
++ void start()
++ void stop()
+- void checkForUpcomingReminders()
+- void sendReminderNotification(Event)
+}
+
+
+class service.impl.TemplateServiceImpl {
+- ResponseTemplateDAO templateDAO
++ String getTemplate(String,String)
++ void setTemplate(String,String)
++ void resetTemplate(String)
++ Map<String,String> getAllCustomTemplates()
++ Map<String,String> getAllAvailableTemplates()
++ boolean isCustomTemplate(String)
+}
+
+
+
+
+service.EventService <|.. service.impl.EventServiceImpl
+service.ReminderService <|.. service.impl.ReminderServiceImpl
+service.TemplateService <|.. service.impl.TemplateServiceImpl
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+interface view.MainView {
+~ void displayEvents(List<Event>,boolean,Long)
+~ void displayEventDetails(Event)
+~ void showEventEditor(Event)
+~ void showErrorMessage(String,String)
+~ void showInfoMessage(String,String)
+~ boolean showConfirmationDialog(String,String)
+~ void setPresenter(MainPresenter)
+}
+
+@enduml

@@ -1,0 +1,67 @@
+@startuml
+class telegram.TelegramBotView {
+- String botToken
+- String botUsername
+- MainPresenter presenter
+- TemplateService templateService
+- Long currentChatId
+- ScheduleDAO scheduleDAO
+- Map<Long,UserState> userStates
+- Set<Long> adminChatIds
+- {static} String AVAILABLE_COMMANDS_HELP
+- Map<String,String> callbackIdMap
+- Map<String,Boolean> callbackObservedFlagMap
+- void setupBotCommands()
++ String getBotUsername()
++ String getBotToken()
++ void onUpdateReceived(Update)
+- void handleCommand(String)
+- void handleAddEventCommand(String)
+- void handleSetReminderTimeCommand(String)
+- void handleToggleRemindersCommand(String)
+- void handleConnectGoogleCalendarCommand()
+- void handleGoogleAuthCode(String)
+- void handleDisconnectGoogleCalendarCommand()
+- void handleGoogleCalendarSync()
+- void handleGoogleCalendarList()
++ void executeSendMessage(SendMessage)
+- void sendMessage(Long,String)
+- void sendMessageWithEntities(Long,String,List<MessageEntity>)
+- void sendMessageWithKeyboard(Long,String,InlineKeyboardMarkup)
++ void displayEvents(List<Event>,boolean,Long)
+~ String formatEventText(Event,boolean)
+- InlineKeyboardMarkup createEventKeyboard(Event,boolean)
+- String createSafeCallbackId(String,boolean)
+- String getFullEventIdFromCallback(String)
++ void displayEventDetails(Event)
++ void showEventEditor(Event)
++ void showErrorMessage(String,String)
++ void showInfoMessage(String,String)
++ boolean showConfirmationDialog(String,String)
++ void setPresenter(MainPresenter)
++ void registerBot()
++ void sendDirectMessage(Long,String)
+- void handleCallbackQuery(org.telegram.telegrambots.meta.api.objects.CallbackQuery)
+- void answerCallbackQuery(String,String)
+- void handleGrantViewAccessCommand(String)
+- void handleListObservedEventsCommand(String)
+- void handleGetMyIdCommand()
+- void handleAdminLogin(String)
+- void handleAdminLogout()
+- boolean isAdmin(Long)
+- void handleListTemplates()
+- void handleSetTemplateCommand(String)
+- void handleResetTemplateCommand(String)
+}
+
+
+enum telegram.UserState {
++  AWAITING_GOOGLE_CODE
++  AWAITING_TEMPLATE_TEXT
+}
+
+
+
+view.MainView <|.. telegram.TelegramBotView
+org.telegram.telegrambots.bots.TelegramLongPollingBot <|-- telegram.TelegramBotView
+@enduml

@@ -1,0 +1,90 @@
+@startuml
+interface dao.ObserverPermissionDAO {
+~ void addPermission(Long,Long)
+~ void removePermission(Long,Long)
+~ boolean hasPermission(Long,Long)
+~ Set<Long> getObservedTargetChatIds(Long)
+}
+
+class dao.impl.InMemoryResponseTemplateDAO {
+- ConcurrentHashMap<String,String> templates
++ Optional<String> findByKey(String)
++ void saveOrUpdate(String,String)
++ void delete(String)
++ Map<String,String> findAll()
+}
+
+
+interface dao.ResponseTemplateDAO {
+~ Optional<String> findByKey(String)
+~ void saveOrUpdate(String,String)
+~ void delete(String)
+~ Map<String,String> findAll()
+}
+
+interface dao.EventDAO {
+~ Event createEvent(Event)
+~ Event updateEvent(Event)
+~ Optional<Event> findByIdAndOwnerChatId(String,Long)
+~ Optional<Event> findByGoogleIdAndOwnerChatId(String,Long)
+~ List<Event> findAllByOwnerChatId(Long)
+~ List<Event> findEventsBetweenForOwner(LocalDateTime,LocalDateTime,Long)
+~ void deleteByIdAndOwnerChatId(String,Long)
+~ List<Event> getAllEventsGlobally()
+}
+
+interface dao.ScheduleDAO {
+~ List<Event> getEvents(LocalDate,LocalDate,Long)
+}
+
+class dao.impl.InMemoryObserverPermissionDAO {
+- Map<Long,Set<Long>> observerPermissions
++ void addPermission(Long,Long)
++ void removePermission(Long,Long)
++ boolean hasPermission(Long,Long)
++ Set<Long> getObservedTargetChatIds(Long)
+}
+
+
+class dao.impl.InMemoryEventDAO {
+- Map<String,Event> eventStore
++ Event createEvent(Event)
++ Event updateEvent(Event)
++ Optional<Event> findByIdAndOwnerChatId(String,Long)
++ Optional<Event> findByGoogleIdAndOwnerChatId(String,Long)
++ List<Event> findAllByOwnerChatId(Long)
++ List<Event> findEventsBetweenForOwner(LocalDateTime,LocalDateTime,Long)
++ void deleteByIdAndOwnerChatId(String,Long)
++ List<Event> getAllEventsGlobally()
+}
+
+
+class dao.impl.GoogleCalendarDAO {
+- {static} String APPLICATION_NAME
+- {static} JsonFactory JSON_FACTORY
+- {static} String TOKENS_DIRECTORY_PATH
+- {static} List<String> SCOPES
+- {static} String CREDENTIALS_FILE_PATH
+- {static} String OOB_REDIRECT_URI
+- NetHttpTransport httpTransport
+- GoogleClientSecrets clientSecrets
+- DataStoreFactory createDataStoreFactory(Long)
+- GoogleAuthorizationCodeFlow createGoogleAuthorizationCodeFlow(Long)
++ Credential loadCredential(Long)
++ String getAuthorizationUrl(Long,String)
++ Credential exchangeCodeForTokens(Long,String)
++ void deleteTokens(Long)
++ List<Event> getEvents(LocalDate,LocalDate,Long)
++ List<Event> getEvents(LocalDate,LocalDate)
+- Event convertToModelEvent(com.google.api.services.calendar.model.Event)
+- LocalDateTime convertGoogleDateTimeToLocalDateTime(com.google.api.services.calendar.model.EventDateTime)
+}
+
+
+
+
+dao.ResponseTemplateDAO <|.. dao.impl.InMemoryResponseTemplateDAO
+dao.ObserverPermissionDAO <|.. dao.impl.InMemoryObserverPermissionDAO
+dao.EventDAO <|.. dao.impl.InMemoryEventDAO
+dao.ScheduleDAO <|.. dao.impl.GoogleCalendarDAO
+@enduml

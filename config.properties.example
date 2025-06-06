@@ -1,0 +1,6 @@
+# Telegram Bot Configuration
+bot.token=[YOUR_BOT_TOKEN]
+bot.username=[YOUR_BOT_USERNAME]
+
+# Admin Configuration
+admin.secret=[YOUR_ADMIN_SECRET]

@@ -1,0 +1,11 @@
+@startuml
+class config.AppConfig {
+- {static} String CONFIG_FILE
+- {static} Properties properties
++ {static} String getBotToken()
++ {static} String getBotUsername()
++ {static} String getAdminSecret()
+}
+
+
+@enduml

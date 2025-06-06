@@ -1,0 +1,23 @@
+@startuml
+class util.MarkdownFormatter {
+- {static} char[] SPECIAL_CHARACTERS
++ {static} String escapeMarkdownV2(String)
++ {static} String bold(String)
++ {static} String italic(String)
++ {static} String code(String)
++ {static} String codeBlock(String)
++ {static} String formatAsMarkdownV2(String,boolean,boolean)
+}
+
+
+class util.DateTimeUtils {
+- {static} DateTimeFormatter SHORT_DATE_TIME
+- {static} DateTimeFormatter MEDIUM_DATE_TIME
+- {static} DateTimeFormatter DATE_TIME_FORMATTER
++ {static} String formatShort(LocalDateTime)
++ {static} String formatMedium(LocalDateTime)
++ {static} String formatDateTime(LocalDateTime)
+}
+
+
+@enduml

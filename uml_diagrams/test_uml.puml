@@ -1,0 +1,50 @@
+@startuml
+class dao.impl.SQLiteEventDAOTest {
+- SQLiteEventDAO eventDAO
+- String dbPath
+- Long ownerChatId
+~ Path tempDir
+~ void setUp()
+~ void tearDown()
+- Event createSampleEvent(String,String,LocalDateTime,LocalDateTime)
+~ void createAndFindByIdAndOwnerChatId()
+~ void createEvent_generatesId_ifNotProvided()
+~ void findByIdAndOwnerChatId_nonExistent_returnsEmpty()
+~ void findAllByOwnerChatId()
+~ void findEventsBetweenForOwner()
+~ void updateEvent()
+~ void updateEvent_nonExistent_throwsException()
+~ void deleteByIdAndOwnerChatId()
+~ void findByGoogleIdAndOwnerChatId()
+~ void getAllEventsGlobally()
+}
+
+
+class service.impl.EventServiceImplTest {
+- EventDAO mockEventDAO
+- EventServiceImpl eventService
+- Event sampleEvent1
+- Long ownerChatId
+~ void setUp()
+~ void addEvent_newLocalEvent_createsSuccessfully()
+~ void addEvent_newEventFromGoogle_notExistingLocally_createsSuccessfully()
+~ void addEvent_eventFromGoogle_existsLocally_noChanges_returnsExisting()
+~ void addEvent_eventFromGoogle_existsLocally_withChanges_updatesSuccessfully()
+~ void updateEvent_validEvent_updatesSuccessfully()
+~ void updateEvent_invalidTime_throwsIllegalArgumentException()
+~ void deleteEvent_callsDaoDelete()
+~ void getEventByIdAndOwner_callsDaoGetByIdAndOwner()
+~ void getEventsForOwner_callsDaoFindAllByOwnerChatId()
+~ void getEventsForPeriodForOwner_callsDaoFindEventsBetweenForOwner()
+~ void setEventReminderTime_eventExists_updatesAndReturnsEvent()
+~ void setEventReminderTime_eventNotFound_throwsIllegalArgumentException()
+~ void toggleEventReminders_eventExists_updatesAndReturnsEvent()
+~ void toggleEventReminders_eventNotFound_throwsIllegalArgumentException()
+}
+
+
+class telegram.TelegramBotViewFormatEventTextTest {
+~ void testFormatEventText_basicFields()
+}
+
+@enduml
