@@ -667,8 +667,12 @@ public class TelegramBotView extends TelegramLongPollingBot implements MainView 
         }
         sb.append("\n");
         
-        // ID события
-        sb.append("🆔 ").append(MarkdownFormatter.code(event.getId().toString()));
+        // ID события (если есть локальный ID или Google ID)
+        if (event.getId() != null) {
+            sb.append("🆔 ").append(MarkdownFormatter.code(event.getId().toString()));
+        } else if (event.getGoogleId() != null) {
+            sb.append("🆔 ").append(MarkdownFormatter.code("google:" + event.getGoogleId()));
+        }
         
         return sb.toString();
     }
